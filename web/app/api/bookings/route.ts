@@ -78,6 +78,15 @@ export async function POST(request: NextRequest) {
         const roomInfo = data.rooms ? `${data.rooms.room_number || ''} (${data.rooms.room_type || ''})` : '未知房號'
         await sendLineNotify(`\n[新訂單通知]\n房號: ${roomInfo}\n房客: ${parsedData.guest_name}\n入住: ${parsedData.check_in_date}\n\n請至後台查看詳情。`)
 
+        // [Demo Feature] Auto-generate Task immediately for Direct Bookings
+        // This allows the task to appear in "Task Marketplace" immediately for the scheduled check-out date
+        await supabase.from('tasks').insert({
+            booking_id: data.id,
+            room_id: parsedData.room_id,
+            status: 'pending',
+            scheduled_date: parsedData.check_out_date
+        })
+
         return NextResponse.json(data)
 
     } catch (e: any) {
