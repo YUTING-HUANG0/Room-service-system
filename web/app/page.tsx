@@ -24,9 +24,22 @@ export default function Home() {
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
           現代化旅宿管理解決方案
         </h1>
-        <p className="text-xl text-muted-foreground max-w-[600px] mb-8">
-          整合 Booking 與 Agoda 訂單同步，自動化房務調度，讓老闆與房務員協作更輕鬆。
-        </p>
+        <div className="max-w-[800px] mb-8 space-y-4">
+          <p className="text-xl text-muted-foreground">
+            整合 Booking 與 Agoda 訂單同步，自動化房務調度，讓老闆與房務員協作更輕鬆。
+          </p>
+          <div className="bg-gray-50 p-6 rounded-lg text-left shadow-sm border">
+            <h2 className="text-lg font-bold mb-2">關於我們</h2>
+            <p className="text-gray-600 mb-4">
+              我們致力於提供最優質的住宿體驗，結合科技與人文服務，為每一位旅客打造像家一樣的溫馨空間。
+              無論是商務出差還是家庭旅遊，這裡都是您的最佳選擇。
+            </p>
+            <div className="flex items-center gap-2 text-blue-800 font-semibold">
+              <span>📞 訂房專線：</span>
+              <a href="tel:0912345678" className="hover:underline">0912-345-678</a>
+            </div>
+          </div>
+        </div>
 
         <div className="flex gap-4">
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>

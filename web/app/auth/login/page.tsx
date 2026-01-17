@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     const handleLogin = async () => {
         setLoading(true);
-        const { error } = await supabase.auth.signInWithPassword({
+        const { error, data: { user } } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
@@ -26,10 +26,27 @@ export default function LoginPage() {
         if (error) {
             alert("登入失敗：" + error.message);
             setLoading(false);
+            return;
+        }
+
+        // Fetch User Role
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user?.id)
+            .single();
+
+        const role = profile?.role;
+
+        router.refresh();
+
+        if (role === 'admin') {
+            router.push("/admin/calendar");
+        } else if (role === 'housekeeper') {
+            router.push("/housekeeper/tasks");
         } else {
-            // 登入成功後跳轉，並強制刷新 session 狀態
+            // Default or fallback
             router.push("/admin");
-            router.refresh();
         }
     };
 
@@ -73,9 +90,14 @@ export default function LoginPage() {
                     >
                         {loading ? "登入中..." : "登入"}
                     </Button>
-                    <Button variant="outline" className="w-full" asChild>
-                        <Link href="/">回首頁</Link>
-                    </Button>
+                    <div className="grid grid-cols-2 gap-2 w-full">
+                        <Button variant="outline" asChild>
+                            <Link href="/auth/register">註冊帳號</Link>
+                        </Button>
+                        <Button variant="outline" asChild>
+                            <Link href="/">回首頁</Link>
+                        </Button>
+                    </div>
                 </CardFooter>
             </Card>
         </div>
